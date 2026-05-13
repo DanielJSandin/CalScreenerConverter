@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Daniel\\Desktop\\symcell\\CalScreenerconverter\\Converter\\Converter.csproj": {}
+    "C:\\Users\\Daniel\\Desktop\\symcell\\CalScreenerConverter\\Converter\\Converter.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Daniel\\Desktop\\symcell\\CalScreenerconverter\\Converter\\Converter.csproj": {
+    "C:\\Users\\Daniel\\Desktop\\symcell\\CalScreenerConverter\\Converter\\Converter.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Daniel\\Desktop\\symcell\\CalScreenerconverter\\Converter\\Converter.csproj",
+        "projectUniqueName": "C:\\Users\\Daniel\\Desktop\\symcell\\CalScreenerConverter\\Converter\\Converter.csproj",
         "projectName": "Converter",
-        "projectPath": "C:\\Users\\Daniel\\Desktop\\symcell\\CalScreenerconverter\\Converter\\Converter.csproj",
+        "projectPath": "C:\\Users\\Daniel\\Desktop\\symcell\\CalScreenerConverter\\Converter\\Converter.csproj",
         "packagesPath": "C:\\Users\\Daniel\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Daniel\\Desktop\\symcell\\CalScreenerconverter\\Converter\\obj\\",
+        "outputPath": "C:\\Users\\Daniel\\Desktop\\symcell\\CalScreenerConverter\\Converter\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Daniel\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -45,6 +45,12 @@
         "net10.0": {
           "framework": "net10.0",
           "targetAlias": "net10.0",
+          "dependencies": {
+            "System.IO.Ports": {
+              "target": "Package",
+              "version": "[10.0.8, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
