@@ -1,4 +1,7 @@
-public enum MeasurementMode
+public enum CalScreenerMeasurementMode
 {
-    
+    Nrse,
+    Rse,
+    Differential,
+    PseudoDifferential
 }
