@@ -6,8 +6,7 @@
         
         List<LegacyWrapper[]> legacyWrapperGroups = LoadLegacyGroups(Path.Combine(AppContext.BaseDirectory, inputDirPath));
         System.Console.Out.WriteLine($"Loaded {legacyWrapperGroups.Count} groups of legacy settings for conversion.");
-        Console.Out.WriteLine(legacyWrapperGroups[0][0].NidaqSettings.DeviceId);
-        Console.Out.WriteLine(legacyWrapperGroups[0][0].NidaqSettings.DeviceName);
+
     }
 
 

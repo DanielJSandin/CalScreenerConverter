@@ -42,4 +42,6 @@ public static class MainConverter
         }
         return NiDaqSettingMapper.Map(legacyWrappers[0].NidaqSettings);
     }
+
+    
 }

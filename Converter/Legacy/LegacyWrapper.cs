@@ -11,7 +11,7 @@ public class LegacyWrapper
 
     public double Temperature { get; set; }
 
-    public string? PlateKey { get; set; }
+    public string PlateKey { get; set; }
 
     public LegacyWrapper(LegacyNiDaqSettings nidaqSettings, String fileName)
     {
