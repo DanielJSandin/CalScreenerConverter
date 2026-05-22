@@ -1,4 +1,5 @@
 using System.Xml.Serialization;
+using Converter.Shared;
 
 namespace Converter.Legacy;
 
