@@ -20,5 +20,4 @@ public static class NiDaqSettingMapper
             MeasurementMode = legacyNiDaqSettings.MeasurementMode
         };
     }
-    
 }

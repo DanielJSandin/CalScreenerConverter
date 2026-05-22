@@ -11,7 +11,7 @@ public static class MainConverter
 
         CalScreenerDeviceSettings calScreenerDeviceSettings = new CalScreenerDeviceSettings
         {
-            NidaqSettings = MergeSharedNiDaqSettings(legacyWrappers),
+            NidaqSettings = MergeAndConvertNiDaqSettings(legacyWrappers),
             ThermostatSettings = new ThermostatSettings(legacyWrappers[0].NidaqSettings.SamplingInterval),
             CalibratorSettings = new CalibratorSettings(),
             TemperatureProbeSettings = new TemperatureProbeSettings(),
@@ -31,7 +31,7 @@ public static class MainConverter
     }
 
 
-    private static NidaqSettings MergeSharedNiDaqSettings(LegacyWrapper[] legacyWrappers)
+    private static NidaqSettings MergeAndConvertNiDaqSettings(LegacyWrapper[] legacyWrappers)
     {
         for (int i = 1; i < legacyWrappers.Length; i++)
         {
@@ -40,7 +40,11 @@ public static class MainConverter
                 throw new ArgumentException("Convertation Failed, XML files differ in shared settings");
             }
         }
-        return NiDaqSettingMapper.Map(legacyWrappers[0].NidaqSettings);
+        NidaqSettings nidaqSettings =  NiDaqSettingMapper.Map(legacyWrappers[0].NidaqSettings);
+
+        nidaqSettings.Wells = WellSettingsMapper.Map(legacyWrappers);
+
+        return nidaqSettings;
     }
 
     
