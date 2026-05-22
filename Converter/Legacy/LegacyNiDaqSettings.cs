@@ -26,4 +26,18 @@ public class LegacyNiDaqSettings
     public int HardwareSwitchTime { get; set; }
 
     public CalScreenerMeasurementMode MeasurementMode { get; set; }
+    
+
+    public bool EnsureIdenticalExceptWells(LegacyNiDaqSettings other)
+    {
+        return DeviceName == other.DeviceName &&
+               DeviceId == other.DeviceId &&
+               UToPFactor == other.UToPFactor &&
+               NumberOfSamples == other.NumberOfSamples &&
+               SkipLowCount == other.SkipLowCount &&
+               SkipHighCount == other.SkipHighCount &&
+               SamplingInterval == other.SamplingInterval &&
+               HardwareSwitchTime == other.HardwareSwitchTime &&
+               MeasurementMode == other.MeasurementMode;
+    }
 }

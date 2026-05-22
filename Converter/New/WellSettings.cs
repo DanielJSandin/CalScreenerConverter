@@ -30,7 +30,7 @@ public class WellSettings
  
     // Im reusing the same as the legacy class, as they have the same schema.
     [DefaultValue(null)]
-    LegacyCalibrationPoint[]? CalibrationPoints {get; set;}
+    public LegacyCalibrationPoint[]? CalibrationPoints {get; set;}
     
     public CrosstalkCalibrationDataPoint[] CrosstalkCalibrationPoints 
     { get
@@ -53,6 +53,8 @@ public class WellSettings
     // it doesnt seem to give the average of them either
     public double Gain { get; set; }
 
+
+    //offset also seems weird, as it can be different, but it still has a specific value, Malin said i didnt need to convert this value
     public double Offset { get; set; }
 
     public int ReferenceWellIndex { get; set; }

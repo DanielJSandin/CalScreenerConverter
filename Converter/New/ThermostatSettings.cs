@@ -7,4 +7,11 @@ public class ThermostatSettings
     public ModbusClientSettings? ModbusClientSettings { get; set; }
 
     public SerialPortSettings? SerialPortSettings { get; set; }
+
+    public ThermostatSettings(double samplingIntervalMs)
+    {
+        SamplingIntervalMs = samplingIntervalMs;
+        ModbusClientSettings = new ModbusClientSettings();
+        SerialPortSettings = new SerialPortSettings();
+    }
 }
