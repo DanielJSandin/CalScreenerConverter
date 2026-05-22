@@ -25,5 +25,5 @@ public class LegacyNiDaqSettings
 
     public int HardwareSwitchTime { get; set; }
 
-    public string? MeasurementMode { get; set; }
+    public CalScreenerMeasurementMode MeasurementMode { get; set; }
 }
