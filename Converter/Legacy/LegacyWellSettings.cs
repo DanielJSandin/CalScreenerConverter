@@ -1,6 +1,6 @@
 using System.Xml.Serialization;
 
-namespace Converter.Legacy.Model;
+namespace Converter.Legacy;
 
 public class LegacyWellSettings
 {
@@ -12,6 +12,5 @@ public class LegacyWellSettings
 
     public int ReferenceWellIndex { get; set; }
 
-    [XmlArrayItem("CalibrationPoint")]
     public LegacyCalibrationPoint[]? CalibrationPoints { get; set; }
 }
