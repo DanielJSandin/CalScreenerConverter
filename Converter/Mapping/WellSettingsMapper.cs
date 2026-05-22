@@ -13,7 +13,7 @@ public static class WellSettingsMapper
         Guid[] calibrationIds = new Guid[legacyWrappers.Length];
         for (int i = 0; i < legacyWrappers.Length; i++)
         {
-            calibrationIds[i] = new Guid(); //dont know if i should use potential existing calibrationIds
+            calibrationIds[i] = Guid.NewGuid(); //dont know if i should use potential existing calibrationIds
             //in the legacy well settings calibrationpoints, so for now i just make a new one
         }
 

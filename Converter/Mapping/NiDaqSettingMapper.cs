@@ -6,9 +6,9 @@ namespace Converter.Mapping;
 
 public static class NiDaqSettingMapper
 {
-    public static NidaqSettings Map(LegacyNiDaqSettings legacyNiDaqSettings)
+    public static NiDaqSettings Map(LegacyNiDaqSettings legacyNiDaqSettings)
     {
-        return new NidaqSettings
+        return new NiDaqSettings
         {
             //Wells = legacyNiDaqSettings.Wells?.Select(WellSettingsMapper.Map).ToArray() ?? [],
             UToPFactor = legacyNiDaqSettings.UToPFactor,

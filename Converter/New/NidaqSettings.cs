@@ -3,7 +3,7 @@ using Converter.Shared;
 
 namespace Converter.New;
 
-public class NidaqSettings
+public class NiDaqSettings
 {
     public WellSettings[]? Wells { get; set; }
 

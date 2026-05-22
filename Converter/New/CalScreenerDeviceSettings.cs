@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Converter.New;
 
 /// <summary>
@@ -5,7 +7,10 @@ namespace Converter.New;
 /// </summary>
 public class CalScreenerDeviceSettings
 {
-    public NidaqSettings? NidaqSettings { get; set; }
+    [JsonPropertyName("$type")]
+    public string Type => "CalScreenerDeviceSettings";
+    
+    public NiDaqSettings? NiDaqSettings { get; set; }
 
     public ThermostatSettings? ThermostatSettings { get; set; }
 
