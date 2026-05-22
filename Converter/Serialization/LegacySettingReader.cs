@@ -1,6 +1,8 @@
 using System.Xml.Serialization;
 using Converter.Legacy;
 
+namespace Converter.Serialization;
+
 public class LegacySettingReader : ISettingsReader<LegacyWrapper>
 {
     public LegacyWrapper TryRead(string filePath)

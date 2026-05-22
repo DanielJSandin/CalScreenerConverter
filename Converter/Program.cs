@@ -1,12 +1,31 @@
-﻿public class Program
+﻿using Converter.New;
+using Converter.Serialization;
+
+public class Program
 {
+    private const string FileNamePrefix = "NI-DAQmx-Converted-";
     public static void Main(string[] args)
     {
         String inputDirPath = "Input";
+        String outputDirPath = "Output";
         
         List<LegacyWrapper[]> legacyWrapperGroups = LoadLegacyGroups(Path.Combine(AppContext.BaseDirectory, inputDirPath));
         System.Console.Out.WriteLine($"Loaded {legacyWrapperGroups.Count} groups of legacy settings for conversion.");
 
+        List<CalScreenerDeviceSettings> convertedSettings = new List<CalScreenerDeviceSettings>();
+        foreach (LegacyWrapper[] legacyWrapperGroup in legacyWrapperGroups)
+        {
+            convertedSettings.Add(MainConverter.Convert(legacyWrapperGroup));
+        }
+        System.Console.Out.WriteLine($"Converted {convertedSettings.Count} groups of legacy settings.");
+
+        foreach (CalScreenerDeviceSettings calScreenerDeviceSettings in convertedSettings)
+        {
+            string outputFilePath = Path.Combine(AppContext.BaseDirectory, outputDirPath, $"{FileNamePrefix}{calScreenerDeviceSettings.DeviceId}.json");
+            CalScreenerDeviceSettingsWriter writer = new CalScreenerDeviceSettingsWriter();
+            writer.Write(calScreenerDeviceSettings, outputFilePath);
+            System.Console.Out.WriteLine($"Written converted settings to {outputFilePath}");
+        }
     }
 
 
