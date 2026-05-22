@@ -15,7 +15,7 @@ public class LegacyNiDaqSettings
 
     public double UToPFactor { get; set; }
 
-    public int NumberOfSamples { get; set; }
+    public int? NumberOfSamples { get; set; }
 
     public int SkipLowCount { get; set; }
 
