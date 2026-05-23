@@ -14,4 +14,9 @@ public class ThermostatSettings
         ModbusClientSettings = new ModbusClientSettings();
         SerialPortSettings = new SerialPortSettings();
     }
+    public ThermostatSettings()
+    {
+        ModbusClientSettings = new ModbusClientSettings();
+        SerialPortSettings = new SerialPortSettings();
+    }
 }

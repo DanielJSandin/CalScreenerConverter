@@ -12,7 +12,7 @@ public static class MainConverter
         CalScreenerDeviceSettings calScreenerDeviceSettings = new CalScreenerDeviceSettings
         {
             NiDaqSettings = MergeAndConvertNiDaqSettings(legacyWrappers),
-            ThermostatSettings = new ThermostatSettings(legacyWrappers[0].NidaqSettings.SamplingInterval),
+            ThermostatSettings = new ThermostatSettings(),
             CalibratorSettings = new CalibratorSettings(),
             TemperatureProbeSettings = new TemperatureProbeSettings(),
             ActivePlateKey = null, //dont know yet
