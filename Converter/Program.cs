@@ -58,7 +58,7 @@ public class Program
     { 
         var groups = new Dictionary<string, List<string>>();
 
-        var filepaths = Directory.GetFiles(inputDirectory, "*.xml").ToList();
+        var filepaths = Directory.GetFiles(inputDirectory, "*.xml",  SearchOption.AllDirectories).ToList();
         foreach (string filepath in filepaths)
         {
             string deviceId = CreateDeviceId(filepath);
