@@ -3,25 +3,28 @@ using Converter.Serialization;
 
 public class Program
 {
-    private const string FileNamePrefix = "NI-DAQmx-Converted-";
     public static void Main(string[] args)
     {
-        String inputDirPath = "Input";
-        String outputDirPath = "Output";
+        ConverterOptions converterOptions = ConverterOptions.CreateFromArgs(args);
         
-        List<LegacyWrapper[]> legacyWrapperGroups = LoadLegacyGroups(Path.Combine(AppContext.BaseDirectory, inputDirPath));
+        List<LegacyWrapper[]> legacyWrapperGroups = LoadLegacyGroups(converterOptions.InputFolder);
         System.Console.Out.WriteLine($"Loaded {legacyWrapperGroups.Count} groups of legacy settings for conversion.");
 
         List<CalScreenerDeviceSettings> convertedSettings = new List<CalScreenerDeviceSettings>();
+
+        if (converterOptions.Variant is not null && legacyWrapperGroups.Count > 1)
+        {
+            System.Console.Out.WriteLine("Variant is set and will be applied for multiple groups.");
+        }
         foreach (LegacyWrapper[] legacyWrapperGroup in legacyWrapperGroups)
         {
-            convertedSettings.Add(MainConverter.Convert(legacyWrapperGroup));
+            convertedSettings.Add(MainConverter.Convert(legacyWrapperGroup, converterOptions));
         }
         System.Console.Out.WriteLine($"Converted {convertedSettings.Count} groups of legacy settings.");
 
         foreach (CalScreenerDeviceSettings calScreenerDeviceSettings in convertedSettings)
         {
-            string outputFilePath = Path.Combine(AppContext.BaseDirectory, outputDirPath, $"{FileNamePrefix}{calScreenerDeviceSettings.DeviceId}.json");
+            string outputFilePath = Path.Combine(converterOptions.OutputFolder, $"{calScreenerDeviceSettings.DeviceId}.json");
             CalScreenerDeviceSettingsWriter writer = new CalScreenerDeviceSettingsWriter();
             writer.Write(calScreenerDeviceSettings, outputFilePath);
             System.Console.Out.WriteLine($"Written converted settings to {outputFilePath}");
@@ -40,7 +43,7 @@ public class Program
         var filepaths = Directory.GetFiles(inputDirectory, "*.xml").ToList();
         foreach (string filepath in filepaths)
         {
-            string deviceId = GetDeviceId(filepath);
+            string deviceId = CreateDeviceId(filepath);
 
             if (!groups.ContainsKey(deviceId))
             {
@@ -51,9 +54,10 @@ public class Program
         return groups.Values.ToList();
     }
 
-    private static string GetDeviceId(String filePath)
+    private static string CreateDeviceId(String filePath)
     {
         var fileName = Path.GetFileNameWithoutExtension(filePath);
+        //we assume that the legacy files are start with Ni-DAQmx-
         return fileName.Split(' ')[0].Replace("NI-DAQmx-", "");
     }
 
