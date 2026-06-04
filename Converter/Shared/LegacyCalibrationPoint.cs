@@ -19,7 +19,7 @@ public class LegacyCalibrationPoint
 
 
     //The question is if this comment should be mapped of the CrosstalkCalibrationPoints comment as well.
-    public string Comment { get; set; }
+    public string? Comment { get; set; }
 
     public DateTime TimeStamp { get; set; }
 }

@@ -8,7 +8,6 @@ public class ConverterOptions
 
     public bool IgnoreEmptyVariant { get; set; }
 
-    public bool DeleteSuccessfulInputFiles { get; set; }
 
     public string FileNamePrefix { get; set; } = "Symcel.CalSys.CalScreener-";
 
@@ -32,9 +31,6 @@ public class ConverterOptions
                 case "--ignore-empty-variant":
                     options.IgnoreEmptyVariant = true;
                     break;
-                case "--delete-successful-input-files":
-                    options.DeleteSuccessfulInputFiles = true;
-                    break;
                 case "--file-name-prefix":
                     options.FileNamePrefix = GetValue(args, ref i);
                     break;
@@ -44,6 +40,15 @@ public class ConverterOptions
         }
         if (options.Variant is not null && options.IgnoreEmptyVariant)
             throw new ArgumentException("--variant and --ignore-empty-variant cannot be used together.");
+
+        if (string.IsNullOrWhiteSpace(options.InputFolder))
+            throw new ArgumentException("InputFolder cannot be null or empty");
+
+        if (string.IsNullOrWhiteSpace(options.OutputFolder))
+            throw new ArgumentException("OutputFolder cannot be null or empty");
+
+        if (string.IsNullOrWhiteSpace(options.FileNamePrefix))
+            throw new ArgumentException("FileNamePrefix cannot be null or empty");
 
         return options;
     }

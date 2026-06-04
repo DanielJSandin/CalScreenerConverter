@@ -26,6 +26,7 @@ public static class WellSettingsMapper
                 Gain = 1, //we do them like they seem to be
                 ReferenceWellIndex = -1,
                 CrosstalkCalibrationPoints = CreateCrosstalkCalibrationDataPoints(legacyWrappers, i, calibrationIds)
+                //CalibrationPoints = we wont touch it here, cause Im unsure how it should be handled
             };
         }
 
@@ -40,8 +41,19 @@ public static class WellSettingsMapper
 
         for (int i = 0; i < legacyWrappers.Length; i++)
         {
+            var nidaqSettings = legacyWrappers[i].NidaqSettings ?? throw new InvalidDataException($"NidaqSettings is null for a wrapper with" 
+            + "device id {legacyWrappers[i].NidaqSettings.DeviceId}");
+            var wells = nidaqSettings.Wells ?? throw new InvalidDataException($"Wells is null for wrapper with device id "+
+            "{legacyWrappers[i].NidaqSettings.DeviceId}");
+            
+            if (channelIndex >= wells.Length)
+            {
+                throw new InvalidDataException($"Channel index {channelIndex} out of bounds for wrapper with device id " + 
+                " {legacyWrappers[i].NidaqSettings.DeviceId}. Wells length: {wells.Length}");
+            }
+
             double[] gainFactors = new double[48];
-            gainFactors[channelIndex] = legacyWrappers[i].NidaqSettings.Wells[channelIndex].Gain;
+            gainFactors[channelIndex] = wells[channelIndex].Gain;
             crosstalkCalibrations[i] = new CrosstalkCalibrationDataPoint(
                 PlateMapper.MapPlateKey(legacyWrappers[i].PlateKey),
                 calibrationIds[i], //for now we assume all are the same for all wells, but the json i have suggest different on 

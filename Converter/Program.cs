@@ -7,7 +7,25 @@ public class Program
     {
         ConverterOptions converterOptions = ConverterOptions.CreateFromArgs(args);
         
+        if (!Directory.Exists(converterOptions.InputFolder))
+        {
+            System.Console.Error.WriteLine($"Error: Input folder does not exist: {converterOptions.InputFolder}");
+            Environment.Exit(1);
+        }
+
+        if (!Directory.Exists(converterOptions.OutputFolder))
+        {
+            Directory.CreateDirectory(converterOptions.OutputFolder);
+        }
+
         List<LegacyWrapper[]> legacyWrapperGroups = LoadLegacyGroups(converterOptions.InputFolder);
+        
+        if (legacyWrapperGroups.Count == 0)
+        {
+            System.Console.Error.WriteLine($"Error: No XML files found in: {converterOptions.InputFolder}");
+            Environment.Exit(1);
+        }
+
         System.Console.Out.WriteLine($"Loaded {legacyWrapperGroups.Count} groups of legacy settings for conversion.");
 
         List<CalScreenerDeviceSettings> convertedSettings = new List<CalScreenerDeviceSettings>();
