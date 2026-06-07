@@ -1,4 +1,5 @@
 using Converter.New;
+using Converter.Shared;
 
 namespace Converter.Mapping;
 
@@ -25,8 +26,8 @@ public static class WellSettingsMapper
                 Offset = 0, //dont know how to convert this, maybe it should be 0
                 Gain = 1, //we do them like they seem to be
                 ReferenceWellIndex = -1,
-                CrosstalkCalibrationPoints = CreateCrosstalkCalibrationDataPoints(legacyWrappers, i, calibrationIds)
-                //CalibrationPoints = we wont touch it here, cause Im unsure how it should be handled
+                CrosstalkCalibrationPoints = CreateCrosstalkCalibrationDataPoints(legacyWrappers, i, calibrationIds),
+                CalibrationPoints = CreateCalibrationPoints(legacyWrappers, i)
             };
         }
 
@@ -68,5 +69,32 @@ public static class WellSettingsMapper
         }
 
         return crosstalkCalibrations;
+    }
+
+    private static LegacyCalibrationPoint[]? CreateCalibrationPoints(LegacyWrapper[] legacyWrappers, int channelIndex)
+    {
+        List<LegacyCalibrationPoint> calibrationPoints = new List<LegacyCalibrationPoint>();
+
+
+        foreach (LegacyWrapper legacyWrapper in legacyWrappers)
+        {
+            var nidaqSettings = legacyWrapper.NidaqSettings ?? throw new InvalidDataException($"NidaqSettings is null for a wrapper with" 
+            + "device id {legacyWrapper.NidaqSettings.DeviceId}");
+            var wells = nidaqSettings.Wells ?? throw new InvalidDataException($"Wells is null for wrapper with device id "+
+            "{legacyWrapper.NidaqSettings.DeviceId}");
+            
+            if (channelIndex >= wells.Length)
+            {
+                throw new InvalidDataException($"Channel index {channelIndex} out of bounds for wrapper with device id " + 
+                " {legacyWrapper.NidaqSettings.DeviceId}. Wells length: {wells.Length}");
+            }
+
+            var legacyCalibrationPoints = wells[channelIndex].CalibrationPoints;
+            if (legacyCalibrationPoints != null)
+            {
+                calibrationPoints.AddRange(legacyCalibrationPoints);
+            }
+        }
+        return calibrationPoints.Count > 0 ? calibrationPoints.ToArray() : null;
     }
 }

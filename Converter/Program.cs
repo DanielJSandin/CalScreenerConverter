@@ -10,7 +10,7 @@ public class Program
         if (!Directory.Exists(converterOptions.InputFolder))
         {
             System.Console.Error.WriteLine($"Error: Input folder does not exist: {converterOptions.InputFolder}");
-            Environment.Exit(1);
+            Exit(1);
         }
 
         if (!Directory.Exists(converterOptions.OutputFolder))
@@ -23,7 +23,8 @@ public class Program
         if (legacyWrapperGroups.Count == 0)
         {
             System.Console.Error.WriteLine($"Error: No XML files found in: {converterOptions.InputFolder}");
-            Environment.Exit(1);
+
+            Exit(1);
         }
 
         System.Console.Out.WriteLine($"Loaded {legacyWrapperGroups.Count} groups of legacy settings for conversion.");
@@ -47,8 +48,18 @@ public class Program
             writer.Write(calScreenerDeviceSettings, outputFilePath);
             System.Console.Out.WriteLine($"Written converted settings to {outputFilePath}");
         }
+
+        Exit(0);
+
     }
 
+    private static void Exit(int exitCode)
+    {
+        Console.WriteLine();
+        Console.WriteLine("Press any key to exit...");
+        Console.ReadKey();
+        Environment.Exit(exitCode);
+    }
 
     /// <summary>
     /// This method is supposed to read the input directory and group the legacy files into groups that should be converted together,
