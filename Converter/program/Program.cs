@@ -65,7 +65,7 @@ public class Program
     /// This method is supposed to read the input directory and group the legacy files into groups that should be converted together,
     /// They are grouped by the device name in the file name, this expects that all files follow the same pattern
     /// </summary>
-    private static List<List<string>> GetConvertGroups(String inputDirectory)
+    private static List<List<string>> GetConvertGroups(string inputDirectory)
     { 
         var groups = new Dictionary<string, List<string>>();
 

@@ -1,4 +1,3 @@
-using Converter.Legacy;
 using Converter.Mapping;
 using Converter.New;
 
@@ -37,8 +36,6 @@ public static class MainConverter
             DeviceId = CreateNewDeviceId(deviceId, converterOptions),
             DeviceName = deviceName
         };
-
-
 
         return calScreenerDeviceSettings;
     }

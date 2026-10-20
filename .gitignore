@@ -4,3 +4,6 @@ obj/
 *.user
 *.suo
 *.userprefs
+
+# Ignore build output directory
+/dist/ 
