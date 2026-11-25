@@ -5,7 +5,7 @@ namespace Converter.Serialization;
 
 public class LegacySettingReader : ISettingsReader<LegacyWrapper>
 {
-    public LegacyWrapper TryRead(string filePath)
+    public LegacyWrapper TryRead(string filePath, bool singleLegacyFile)
     {
         try
         {
@@ -16,7 +16,7 @@ public class LegacySettingReader : ISettingsReader<LegacyWrapper>
                 {
                     throw new InvalidDataException($"Deserialization returned null for file: {filePath}");
                 }
-                return new LegacyWrapper(nidaqSettings, filePath);
+                return new LegacyWrapper(nidaqSettings, filePath, singleLegacyFile);
             }
         }
         catch (Exception ex)

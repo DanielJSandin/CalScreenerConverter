@@ -12,11 +12,11 @@ public class CalScreenerDeviceSettings
     
     public NiDaqSettings? NiDaqSettings { get; set; }
 
-    public ThermostatSettings? ThermostatSettings { get; set; }
+    //public ThermostatSettings? ThermostatSettings { get; set; }
 
-    public CalibratorSettings? CalibratorSettings { get; set; }
+    //public CalibratorSettings? CalibratorSettings { get; set; }
 
-    public TemperatureProbeSettings? TemperatureProbeSettings { get; set; }
+    //public TemperatureProbeSettings? TemperatureProbeSettings { get; set; }
 
     public string? ActivePlateKey { get; set; }
 

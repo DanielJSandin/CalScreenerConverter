@@ -18,6 +18,7 @@ public static class WellSettingsMapper
             //in the legacy well settings calibrationpoints, so for now i just make a new one
         }
 
+        DateTimeOffset offset = DateTimeOffset.Now;
         for (int i = 0; i < wellAmount; i++)
         {
             wellSettingsArray[i] = new WellSettings
@@ -26,7 +27,7 @@ public static class WellSettingsMapper
                 Offset = 0, //dont know how to convert this, maybe it should be 0
                 Gain = 1, //we do them like they seem to be
                 ReferenceWellIndex = -1,
-                CrosstalkCalibrationPoints = CreateCrosstalkCalibrationDataPoints(legacyWrappers, i, calibrationIds),
+                CrosstalkCalibrationPoints = CreateCrosstalkCalibrationDataPoints(legacyWrappers, i, calibrationIds, offset),
                 CalibrationPoints = CreateCalibrationPoints(legacyWrappers, i)
             };
         }
@@ -36,7 +37,7 @@ public static class WellSettingsMapper
     }
 
     private static CrosstalkCalibrationDataPoint[] CreateCrosstalkCalibrationDataPoints(
-        LegacyWrapper[] legacyWrappers, int channelIndex, Guid[] calibrationIds)
+        LegacyWrapper[] legacyWrappers, int channelIndex, Guid[] calibrationIds, DateTimeOffset offset)
     {
         CrosstalkCalibrationDataPoint[] crosstalkCalibrations = new CrosstalkCalibrationDataPoint[legacyWrappers.Length];
 
@@ -64,7 +65,7 @@ public static class WellSettingsMapper
                 new double[40],
                 "AUTO Generated Comment: This CrosstalkCalibrationPoint was generated from a 2.0 version calibrationfile",
                 true, //dont really know exactly what that refers to
-                DateTimeOffset.Now
+                offset
             );
         }
 

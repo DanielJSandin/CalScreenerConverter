@@ -2,5 +2,5 @@ namespace Converter.Serialization;
 
 public interface ISettingsReader<T>
 {
-    T TryRead(string filePath);
+    T TryRead(string filePath, bool singleLegacyFile);
 }

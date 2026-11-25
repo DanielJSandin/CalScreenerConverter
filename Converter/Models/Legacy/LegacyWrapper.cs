@@ -13,7 +13,7 @@ public class LegacyWrapper
 
     public string PlateKey { get; set; }
 
-    public LegacyWrapper(LegacyNiDaqSettings nidaqSettings, String fileName)
+    public LegacyWrapper(LegacyNiDaqSettings nidaqSettings, String fileName, bool singleLegacyFile)
     {
         NidaqSettings = nidaqSettings;
 
@@ -28,7 +28,16 @@ public class LegacyWrapper
             RegexOptions.IgnoreCase);
 
         if (!match.Success)
+        {
+            if (singleLegacyFile && Regex.Match(fileName, @"NI-DAQmx-\d", RegexOptions.IgnoreCase).Success)
+            {
+                Temperature = 37;
+                PlateKey = "standard";
+                return;
+            }
+            
             throw new FormatException($"Filename format is invalid: '{fileName}'");
+        }
 
         Temperature = double.Parse(match.Groups["temp"].Value, CultureInfo.InvariantCulture);
         PlateKey = match.Groups["plate"].Value;

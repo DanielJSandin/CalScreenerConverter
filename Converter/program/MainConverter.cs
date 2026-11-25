@@ -21,25 +21,42 @@ public static class MainConverter
 
         var deviceId = firstWrapper.NidaqSettings.DeviceId ?? throw new InvalidDataException("DeviceId is null");
         var deviceName = firstWrapper.NidaqSettings.DeviceName ?? throw new InvalidDataException("DeviceName is null");
+        
+        NiDaqSettings niDaqSettings = MergeAndConvertNiDaqSettings(legacyWrappers);
 
         CalScreenerDeviceSettings calScreenerDeviceSettings = new CalScreenerDeviceSettings
         {
-            NiDaqSettings = MergeAndConvertNiDaqSettings(legacyWrappers),
-            ThermostatSettings = new ThermostatSettings(),
-            CalibratorSettings = new CalibratorSettings(),
-            TemperatureProbeSettings = new TemperatureProbeSettings(),
+            NiDaqSettings = niDaqSettings,
+            //ThermostatSettings = new ThermostatSettings(),
+            //CalibratorSettings = new CalibratorSettings(),
+            //TemperatureProbeSettings = new TemperatureProbeSettings(),
             ActivePlateKey = null, //CalView can set it up
             ActivePlateName = null, //CalView can set it up
-            AvailablePlates = null, //If i read the calsys code correct it should initialize it correctly itself 
-            //["standard", "calPlatePlusGlass"], //I think that is the only possible ones, but not sure what to write yet
+            AvailablePlates = FindAvailablePlates(niDaqSettings), 
             ObjectId = Guid.NewGuid(), // we can just set our own
             DeviceId = CreateNewDeviceId(deviceId, converterOptions),
             DeviceName = deviceName
         };
 
+        
+
         return calScreenerDeviceSettings;
     }
 
+    private static string[] FindAvailablePlates(NiDaqSettings niDaqSettings)
+    {
+        //wells cannot be null here
+        HashSet<string> plates = new HashSet<string>();
+        
+        //bad praactice
+        WellSettings firstWell = niDaqSettings.Wells![0];
+        for (int i = 0; i < firstWell.CrosstalkCalibrationPoints.Length && plates.Count < 3; i++)
+        {
+            plates.Add(firstWell.CrosstalkCalibrationPoints[i].PlateKey);
+        }
+
+        return plates.ToArray();
+    }
 
     private static NiDaqSettings MergeAndConvertNiDaqSettings(LegacyWrapper[] legacyWrappers)
     {
@@ -61,10 +78,11 @@ public static class MainConverter
     {
 
         if (converterOptions.IgnoreEmptyVariant)
-            return string.Empty;
+            return "USB-6210";
 
-        Console.Write($"Variant for group '{deviceId}' (blank allowed): ");
-        return Console.ReadLine() ?? "";
+        Console.Write($"Variant for group '{deviceId}': USB-");
+        string readLine = Console.ReadLine() ?? "";
+        return "USB-" + (readLine.IsWhiteSpace() ? "6210" : readLine);
     }
 
     private static string CreateNewDeviceId(string deviceId, ConverterOptions converterOptions)

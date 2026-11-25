@@ -107,7 +107,7 @@ public class Program
 
                 for (int i = 0; i < groupSize; i++)
                 {
-                    legacyConvertGroup[i] = legacySettingReader.TryRead(group[i]);
+                    legacyConvertGroup[i] = legacySettingReader.TryRead(group[i], groupSize == 1);
                 }
                 legacyConvertGroups.Add(legacyConvertGroup);
             } catch (Exception ex)
