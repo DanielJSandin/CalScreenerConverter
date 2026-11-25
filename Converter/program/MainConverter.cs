@@ -23,6 +23,7 @@ public static class MainConverter
         var deviceName = firstWrapper.NidaqSettings.DeviceName ?? throw new InvalidDataException("DeviceName is null");
         
         NiDaqSettings niDaqSettings = MergeAndConvertNiDaqSettings(legacyWrappers);
+        string[] availablePlates = FindAvailablePlates(niDaqSettings);
 
         CalScreenerDeviceSettings calScreenerDeviceSettings = new CalScreenerDeviceSettings
         {
@@ -30,9 +31,9 @@ public static class MainConverter
             //ThermostatSettings = new ThermostatSettings(),
             //CalibratorSettings = new CalibratorSettings(),
             //TemperatureProbeSettings = new TemperatureProbeSettings(),
-            ActivePlateKey = null, //CalView can set it up
-            ActivePlateName = null, //CalView can set it up
-            AvailablePlates = FindAvailablePlates(niDaqSettings), 
+            ActivePlateKey =  PlateMapper.MapPlateKey(availablePlates[0]),
+            ActivePlateName = PlateMapper.MapPlateName(availablePlates[0]), 
+            AvailablePlates = availablePlates,
             ObjectId = Guid.NewGuid(), // we can just set our own
             DeviceId = CreateNewDeviceId(deviceId, converterOptions),
             DeviceName = deviceName
@@ -49,10 +50,10 @@ public static class MainConverter
         HashSet<string> plates = new HashSet<string>();
         
         //bad praactice
-        WellSettings firstWell = niDaqSettings.Wells![0];
-        for (int i = 0; i < firstWell.CrosstalkCalibrationPoints.Length && plates.Count < 3; i++)
+        WellSettings firstWellWithCrosstalkPoints = niDaqSettings.Wells![8];
+        for (int i = 0; i < firstWellWithCrosstalkPoints.CrosstalkCalibrationPoints.Length && plates.Count < 3; i++)
         {
-            plates.Add(firstWell.CrosstalkCalibrationPoints[i].PlateKey);
+            plates.Add(firstWellWithCrosstalkPoints.CrosstalkCalibrationPoints[i].PlateKey);
         }
 
         return plates.ToArray();

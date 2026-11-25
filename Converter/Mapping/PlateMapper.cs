@@ -18,7 +18,7 @@ public static class PlateMapper
         {
             "glass" => glass[0],
             "titan" => titan[0],
-            "placeholder" => titanxTalk[0],
+            "titanxtalk" => titanxTalk[0],
             _ => throw new ArgumentException("Cant recognice plate name: " + legacyPlateName)
         };
     }
@@ -34,7 +34,7 @@ public static class PlateMapper
         {
             "glass" => glass[1],
             "titan" => titan[1],
-            "placeholder" => titanxTalk[1],
+            "titanxtalk" => titanxTalk[1],
             _ => throw new ArgumentException("Cant recognice plate name: " + legacyPlateName)
         };
     }

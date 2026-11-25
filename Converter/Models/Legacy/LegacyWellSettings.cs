@@ -13,5 +13,6 @@ public class LegacyWellSettings
 
     public int ReferenceWellIndex { get; set; }
 
+    //[XmlArrayItem("CalibrationPoint")]
     public LegacyCalibrationPoint[]? CalibrationPoints { get; set; }
 }

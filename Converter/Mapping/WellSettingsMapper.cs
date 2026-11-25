@@ -39,6 +39,8 @@ public static class WellSettingsMapper
     private static CrosstalkCalibrationDataPoint[] CreateCrosstalkCalibrationDataPoints(
         LegacyWrapper[] legacyWrappers, int channelIndex, Guid[] calibrationIds, DateTimeOffset offset)
     {
+        if (channelIndex < 8 || channelIndex > 39)
+            return Array.Empty<CrosstalkCalibrationDataPoint>();
         CrosstalkCalibrationDataPoint[] crosstalkCalibrations = new CrosstalkCalibrationDataPoint[legacyWrappers.Length];
 
         for (int i = 0; i < legacyWrappers.Length; i++)
@@ -63,7 +65,7 @@ public static class WellSettingsMapper
                 legacyWrappers[i].Temperature,
                 gainFactors,
                 new double[40],
-                "AUTO Generated Comment: This CrosstalkCalibrationPoint was generated from a 2.0 version calibrationfile",
+                "AUTO Generated Comment: This CrosstalkCalibrationPoint was generated from a version 2.0 calibration file",
                 true, //dont really know exactly what that refers to
                 offset
             );

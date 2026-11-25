@@ -123,11 +123,11 @@ will read the standard input file and save to the specified file, which will be 
 ```bash
 Converter.exe --output C:\Users\Daniel\Downloads\newOutPutFile
 Loaded 2 groups of legacy settings for conversion.
-Variant for group 'NI-DAQmx-356752748' (blank allowed): Variant1
-Variant for group 'NI-DAQmx-35675278' (blank allowed):
+Variant for group 'NI-DAQmx-356752748': USB-Variant1
+Variant for group 'NI-DAQmx-35675278': USB-
 Converted 2 groups of legacy settings.
-Written converted settings to C:\Users\Daniel\Downloads\newOutPutFile\Symcel.CalSys.CalScreener-Variant1-356752748.json
-Written converted settings to C:\Users\Daniel\Downloads\newOutPutFile\Symcel.CalSys.CalScreener--35675278.json
+Written converted settings to C:\Users\Daniel\Downloads\newOutPutFile\Symcel.CalSys.CalScreener-USB-Variant1-356752748.json
+Written converted settings to C:\Users\Daniel\Downloads\newOutPutFile\Symcel.CalSys.CalScreener-USB-6210-35675278.json
 ```
 In the example XML files where copied and received new id to showcase the grouping.
 
@@ -150,48 +150,45 @@ For grouping to work the fields:
 * SamplingInterval
 * HardwareSwitchTime
 * MeasurementMode
+must be identical between the grouped XML files, or the program will fail converting them.
 
-Must be identical between the grouped XML files, or the program will fail converting them.
+Although for groups with just a single calibration file (i.e there is just one file with a specific serial number), if that file doesn't have temperature and platename it will default to 37 titan. 
+
+Acceptable platenames for the converter (not case sensitive) grouped by 4.1 plate names:
+* calPlate Pro glass
+    * glas
+    * calPlatePlusGlass
+* Standard
+    * standard
+    * titan
+* calPlate Pro
+    * titanXtalk
+    * calPlatePlus
 
 
 #### CalibrationPoints
-CalibrationPoints are preserved during conversion and mapped directly to the corresponding well in the CalScreener 3.1 JSON structure.
-As data 
+CalibrationPoints are not perserved in the conversion, as instructed by Andreas.
 
-The converter assumes that well indices are compatible between the CalScreener 2.0 and CalScreener 3.1 formats and therefore performs no index translation.
-
-No sample CalScreener 2.0 files containing CalibrationPoints were available during implementation. As a result, the expected migration behavior could not be verified against existing data.
-
-The CalibrationPoint structures in the CalScreener 2.0 and CalScreener 3.1 codebases appear to be identical. Based on this observation, CalibrationPoints are copied directly without modification, should they be present in source files.
-
-#### Nulling fields
-All `SerialPortSettings` fields are set to `null` as 2.0 lacks this data and we  assume that they will be initialized by the CalScreener to default values when null.
-
-Same thing for the fields in `ThermostatSettings` except its own `SerialPortSettings`, which itself sets them to `null`
 
 #### Number of Samples
 `NumberOfSamples` is defaulted to 120, based on inspection of the Code. This might be wrong and maybe should have been kept at `null`, however the code defaulted it to 120
 in support/2.0 and support/3.1 so assumption that it should always be 120 from an old file as it never says different was made.
 
-#### Plates
-The fields `ActivePlateKey`, `ActivePlateName` and `AvailablePlates` are all set to `null`. The assumption that CalScreener initializes null ones was made.
 
 ### CrosstalkCalibrationPoint
 The following rules describe how CrosstalkCalibrationPoints are generated during conversion. These rules are intended to improve traceability and allow verification of whether issues originate from the conversion process.
 
+The 8 first and last wells do not have any crosstalk calibration points. Which has been confirmed by Andreas.
+
 #### CrosstalkCalibrationPoints Comment
 Each CrosstalkCalibrationPoint Comment is automatically generated to:
-`AUTO Generated Comment: This CrosstalkCalibrationPoint was generated from a 2.0 version calibrationfile`. This is to give transparancy in case of something going wrong with the CalScreener to easily see if it is caused by a conversion.
+`AUTO Generated Comment: This CrosstalkCalibrationPoint was generated from a version 2.0 calibration file`. This is to give transparancy in case of something going wrong with the CalScreener to easily see if it is caused by a conversion.
 
 #### CrosstalkCalibrationPoints CalibrationId
 
 A `CalibrationId` is generated during conversion and assigned to all CrosstalkCalibrationPoints originating from the same XML file.
 
-All wells (0–47) derived from a single XML file share the same `CalibrationId`.
-
-Observed sample data suggests that edge wells (0–7 and 40–47) may behave differently from central wells (8–39) in standard plates.
-
-Despite this observation, the converter does not apply separate grouping logic for edge and center wells. A single `CalibrationId` is used for all wells to ensure deterministic output and to avoid assumptions about instrument internals that are not explicitly defined in the migration specification.
+All wells (8–39) derived from a single XML file share the same `CalibrationId`.
 
 #### CrosstalkCalibrationPoints Timeoffset
 Each CrosstalkCalibrationPoint `TimeOffset` is set to the timestamp at which the conversion was executed.
