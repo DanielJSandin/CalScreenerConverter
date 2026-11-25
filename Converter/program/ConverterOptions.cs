@@ -26,7 +26,7 @@ public class ConverterOptions
                     options.OutputFolder = GetValue(args, ref i);
                     break;
                 case "--variant":
-                    options.Variant = GetValue(args, ref i);
+                    options.Variant = "USB-" + GetValue(args, ref i);
                     break;
                 case "--ignore-empty-variant":
                     options.IgnoreEmptyVariant = true;

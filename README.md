@@ -66,7 +66,7 @@ Alternatively, right-click inside the folder containing Converter.exe and select
 | `--input <path>`        | Input directory containing legacy calibration files. |
 | `--output <path>`       | Output directory for converted files. Will create it if it doesnt exist              |
 | `--variant <name>`      | Use the specified variant for all converted files.   |
-| `--ignore-empty-variant`| Leave the variant field empty without prompting.     |
+| `--ignore-empty-variant`| Defaults every variant to 6210 without asking for each empty variant field.|
 
 If no input or output directories are specified, the tool uses its default directories relative to the executable location.
 
@@ -83,24 +83,31 @@ In this example:
 - Device serial: `35675278`
 - Variant: `USB-6210`
 
+
 The corresponding information is not available in the CalScreeners 2.0 device settings XML files and therefore cannot be determined automatically during conversion.
+
+The Variant refers to the nidaq card variant the converted calibration file will be read by. Always starting with the prefix USB- (which doesn't need to be written manually).
 
 The converter supports the following approaches:
 
 1. Provide a variant for all converted devices using the `--variant` argument.
-2. Allow the variant fields to remain empty automatically using `--ignore-empty-variant`.
+2. Allow the variant fields to automatically default to USB-6210 using `--ignore-empty-variant`.
 3. Enter a variant interactively when prompted during conversion.
 
 When running interactively, the converter will prompt for the variant value only. For the example identifier above, the value to enter would be:
 ```
-USB-6210
+6210
 ```
-Pressing Enter without entering a value will leave the variant field empty. See the Example for an example of Variation Handling.
+
+Which would give the Variant value `USB-6210`
+
+Pressing Enter without entering a value will default the variant to 6210. See the Example for an example of Variation Handling.
+
 
 ## Example
 Running 
 ```cmd
-Converter.exe --input C:\Users\Daniel\Downloads\jsonochxml --variant USB-6210
+Converter.exe --input C:\Users\Daniel\Downloads\jsonochxml --variant 6210
 ```
 
 will read from the specified folder, and write the output to the standard Output folder, and predefining that all jsons created shall have the variant USB-6210, and thus the program will not ask for each group it converts.
